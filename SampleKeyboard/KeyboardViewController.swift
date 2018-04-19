@@ -11,6 +11,7 @@ import UIKit
 class KeyboardViewController: UIInputViewController {
 
     @IBOutlet var nextKeyboardButton: UIButton!
+    var label: UILabel!
     
     override func updateViewConstraints() {
         super.updateViewConstraints()
@@ -21,6 +22,11 @@ class KeyboardViewController: UIInputViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        label = UILabel(frame: CGRect(x:0.0,y:0.0,width:320,height:30.0));
+        label.text = String(format: "needsInputModeSwitchKey: %@", self.needsInputModeSwitchKey ? "true" : "false" )
+        view.addSubview(label)
+        
+        
         // Perform custom UI setup here
         self.nextKeyboardButton = UIButton(type: .system)
         
@@ -29,11 +35,21 @@ class KeyboardViewController: UIInputViewController {
         self.nextKeyboardButton.translatesAutoresizingMaskIntoConstraints = false
         
         self.nextKeyboardButton.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
-        
+
         self.view.addSubview(self.nextKeyboardButton)
-        
         self.nextKeyboardButton.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.nextKeyboardButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        self.nextKeyboardButton.isHidden = !self.needsInputModeSwitchKey;
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        label.text = String(format: "needsInputModeSwitchKey: %@", self.needsInputModeSwitchKey ? "true" : "false" )
+        
+        
     }
     
     override func didReceiveMemoryWarning() {
